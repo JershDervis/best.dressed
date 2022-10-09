@@ -1,0 +1,18 @@
+-- Create A Party by Calling this Function
+CREATE OR REPLACE FUNCTION "create_party"(user_id uuid, party_name varchar) RETURNS party AS $$
+   WITH ins_party AS (
+      INSERT INTO party ("name") VALUES(party_name) RETURNING *
+   ), ins_host AS (
+      INSERT INTO host ("user", "party") 
+      SELECT U.id, ins_party.id FROM ins_party
+      INNER JOIN auth.users U ON U.id=user_id
+      RETURNING party
+   )
+   SELECT * FROM ins_party;
+$$ LANGUAGE SQL;
+
+
+-- Get all parties for a user by calling this function
+CREATE OR REPLACE FUNCTION "get_user_parties"(user_id uuid, return_limit int) RETURNS SETOF party AS $$
+    SELECT p.* FROM party p INNER JOIN host h ON h.party=p.id WHERE h.user=user_id ORDER BY p.created_at DESC LIMIT return_limit;
+$$ LANGUAGE SQL;

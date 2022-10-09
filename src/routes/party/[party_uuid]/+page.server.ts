@@ -17,7 +17,7 @@ export const load: PageServerLoad = async ({ params }) => {
 			// Would prefer to throw the error right away but receiving type errors
 			errCode = 500;
 			errMessage = error.message;
-		} else if (data !== null && data.length > 0 && error === null) {
+		} else if (data !== null && data.length > 0) {
 			return {
 				party: { ...data[0] }
 			};

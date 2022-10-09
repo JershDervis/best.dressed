@@ -4,8 +4,8 @@
 	import { startSupabaseSessionSync } from '@supabase/auth-helpers-sveltekit';
 	import { page } from '$app/stores';
 	import { invalidateAll } from '$app/navigation';
-	import Navbar from '$components/Navbar.svelte';
 	import { redirect } from '@sveltejs/kit';
+	import Navbar from '$components/Navbar.svelte';
 
 	// this sets up automatic token refreshing
 	startSupabaseSessionSync({
@@ -19,8 +19,10 @@
 	}
 </script>
 
-<Navbar user={$page.data.session.user} signOut={signout} />
+<main class="h-screen bg-gray-900 lg:overflow-x-hidden">
+	<Navbar user={$page.data.session.user} signOut={signout} />
 
-<div class="container mx-auto mt-4">
-	<slot />
-</div>
+	<div class="container mx-auto mt-4 text-gray-400">
+		<slot />
+	</div>
+</main>

@@ -26,10 +26,12 @@
       https://github.com/ivanhofer/typesafe-i18n-demo-sveltekit - Basic Sveltekit i18n setup
 - [x] TailwindCSS
       https://www.tailwind-kit.com/components
-- [x] Backend: Supabase or Firebase (realtime + auth)
+      https://svelte-headlessui.goss.io/docs <-- probably don't need
+- [x] Backend: Supabase or Firebase (realtime + auth) - realtime required for dashboard
       https://github.com/supabase/auth-helpers/tree/main/examples/sveltekit/src
       https://github.com/supabase-community/supabase-ui-svelte
 - [ ] Cloudinary: Storing images on a CDN
 - [ ] Deployment: Cloudflare Workers
 - [ ] TRPC for typesafe endpoints?
 - [ ] Zod for type safety?
+- [ ] QR Code generation - https://www.npmjs.com/package/qrcode

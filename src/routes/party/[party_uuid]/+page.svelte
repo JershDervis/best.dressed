@@ -5,6 +5,10 @@
 	$: ({ user } = data.session);
 </script>
 
+<head>
+	<title>Best Dressed | {data.party.name}</title>
+</head>
+
 <h1>{data.party.name}</h1>
 
 {#if user}
