@@ -98,7 +98,7 @@
 					<div class="ml-3 relative">
 						<div class="relative inline-block text-left">
 							<button
-								class="flex items-center justify-center w-full rounded-md  px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-50 hover:bg-gray-50 dark:hover:bg-gray-500 {isProfileOpen
+								class="flex items-center justify-center w-full rounded-md px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-50 hover:bg-gray-50 dark:hover:bg-gray-500 {isProfileOpen
 									? 'bg-gray-50 dark:bg-gray-500'
 									: ''}"
 								on:click={() => (isProfileOpen = !isProfileOpen)}
@@ -116,7 +116,9 @@
 									/>
 								</svg>
 								{#if user}
-									{user?.user_metadata.full_name}
+									{user?.user_metadata.full_name !== undefined
+										? user?.user_metadata.full_name
+										: user?.email}
 								{/if}
 							</button>
 							{#if isProfileOpen}
@@ -183,6 +185,34 @@
 							{item.name}
 						</a>
 					{/each}
+					<div class="border-t-2">
+						{#each profileItems as item}
+							{#if (!item.authRequired && !user) || (item.authRequired && user)}
+								{#if typeof item.href === 'string'}
+									<a
+										href={item.href}
+										class="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white dark:hover:bg-gray-600"
+										role="menuitem"
+									>
+										<span class="flex flex-col">
+											<span> {item.name} </span>
+										</span>
+									</a>
+								{:else if typeof item.href === 'function'}
+									<a
+										on:click={item.href}
+										href="/auth"
+										class="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white dark:hover:bg-gray-600"
+										role="menuitem"
+									>
+										<span class="flex flex-col">
+											<span> {item.name} </span>
+										</span>
+									</a>
+								{/if}
+							{/if}
+						{/each}
+					</div>
 				</div>
 			</div>
 		</Transition>
