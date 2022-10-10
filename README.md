@@ -27,6 +27,7 @@
 - [x] TailwindCSS
       https://www.tailwind-kit.com/components
       https://svelte-headlessui.goss.io/docs <-- probably don't need
+      https://tailwind-elements.com/quick-start/ <-- might be useful to speed things up
 - [x] Backend: Supabase or Firebase (realtime + auth) - realtime required for dashboard
       https://github.com/supabase/auth-helpers/tree/main/examples/sveltekit/src
       https://github.com/supabase-community/supabase-ui-svelte
