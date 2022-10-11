@@ -22,7 +22,7 @@
 <main class="h-screen bg-gray-900 lg:overflow-x-hidden">
 	<Navbar user={$page.data.session.user} signOut={signout} />
 
-	<div class="container mx-auto mt-4 text-gray-400">
+	<div class="container mx-auto mt-4 rounded-md text-gray-400 p-4 max-w-xl dark:bg-slate-800">
 		<slot />
 	</div>
 </main>

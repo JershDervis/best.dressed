@@ -30,19 +30,20 @@
 </script>
 
 <head>
-	<title>Best Dressed</title>
+	<title>{import.meta.env.VITE_PUBLIC_APP_NAME}</title>
 </head>
 
 <h1
 	class="text-center text-3xl text-white font-extrabold leading-8 tracking-tight sm:text-4xl mb-4"
 >
-	Best Dressed
+	{import.meta.env.VITE_PUBLIC_APP_NAME}
 </h1>
 
 <!-- If the user is authenticated -->
 {#if user}
 	<!-- If we found parties AND there wasn't any -->
 	{#if userParties !== null}
+		<!-- TODO: test this page on small mobile (width) -->
 		<CardList
 			title={'Welcome ' + user.user_metadata.full_name}
 			subtitle="Select a party, or create a new one!"
@@ -57,5 +58,7 @@
 		<div>You haven't created any parties yet, click here to create one!</div>
 	{/if}
 {:else}
-	<p class="mt-3 text-lg text-gray-400">Welcome to Best Dressed! Please sign in to get started.</p>
+	<p class="mt-3 text-lg text-gray-400">
+		Welcome to {import.meta.env.VITE_PUBLIC_APP_NAME}! Please sign in to get started.
+	</p>
 {/if}

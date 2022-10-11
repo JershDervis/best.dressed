@@ -36,3 +36,7 @@
 - [ ] TRPC for typesafe endpoints?
 - [ ] Zod for type safety?
 - [ ] QR Code generation - https://www.npmjs.com/package/qrcode
+
+## Todo
+
+- [ ] Test light theme

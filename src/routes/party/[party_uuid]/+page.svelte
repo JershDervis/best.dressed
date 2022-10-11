@@ -6,7 +6,7 @@
 </script>
 
 <head>
-	<title>Best Dressed | {data.party.name}</title>
+	<title>{import.meta.env.VITE_PUBLIC_APP_NAME} | {data.party.name}</title>
 </head>
 
 <h1>{data.party.name}</h1>

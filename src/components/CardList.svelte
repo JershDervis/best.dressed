@@ -20,9 +20,9 @@
 			</p>
 		</div>
 		<button
-			class="text-right flex-col justify-end flex items-center rounded-md px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-50 hover:bg-gray-50 dark:hover:bg-gray-500"
+			class="text-center flex-col justify-end flex items-center rounded-md px-4 py-2 text-sm font-medium bg-blue-600 text-gray-700 dark:text-gray-50 hover:bg-gray-50 dark:hover:bg-blue-500"
 		>
-			Create Party
+			New Party
 		</button>
 	</div>
 	<ul class="flex flex-col divide divide-y w-full">
