@@ -2,7 +2,7 @@
 	import type { PageData } from './$types';
 	import { browser } from '$app/environment';
 	import { supabaseClient } from '$lib/db';
-	import CardList from '$components/CardList.svelte';
+	import CardList from '$components/party/CardList.svelte';
 
 	export let data: PageData;
 	$: ({ user } = data.session);

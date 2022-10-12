@@ -2,11 +2,11 @@
 
 ## Plan:
 
-- [ ] Users can register
+- [x] Users can register
 - [ ] Registered Users can create 'parties'
 - [ ] A user can connect a party to a FB event? Pull in details
 - [ ] A user can connect a party to a Spotify playlist for live updates on dashboard
-- [ ] A party has a unique id (key) which will be a dynamic route e.g. /p/1a2b3c4d
+- [x] A party has a unique id (key) which will be a dynamic route e.g. /p/1a2b3c4d
 - [ ] Parties have QR code shorcuts. E.g. a begin voting QR code for patrons to cast their votes
 - [ ] A party dashboard receives/displays realtime updates for new partygoers
 - [ ] A party dashboard displays a gallery of the partygoers and their outfits
@@ -36,6 +36,7 @@
 - [ ] TRPC for typesafe endpoints?
 - [ ] Zod for type safety?
 - [ ] QR Code generation - https://www.npmjs.com/package/qrcode
+- [ ] https://svelte-modals.mattjennings.io/
 
 ## Todo
 
