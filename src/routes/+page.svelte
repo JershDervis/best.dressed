@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { browser } from '$app/environment';
+	import PartyList from '$components/party/PartyList.svelte';
 	import { supabaseClient } from '$lib/db';
-	import CardList from '$components/party/CardList.svelte';
 
 	export let data: PageData;
 	$: ({ user } = data.session);
@@ -14,7 +14,7 @@
 
 	let userParties: Party[] | null = [];
 
-	async function loadData() {
+	const loadData = async () => {
 		const { data } = await supabaseClient
 			.rpc('get_user_parties', {
 				return_limit: 10,
@@ -22,7 +22,7 @@
 			})
 			.select('room_uuid, name');
 		userParties = data;
-	}
+	};
 
 	$: if (browser && user) {
 		loadData();
@@ -44,7 +44,7 @@
 	<!-- If we found parties AND there wasn't any -->
 	{#if userParties !== null}
 		<!-- TODO: test this page on small mobile (width) -->
-		<CardList
+		<PartyList
 			title={'Welcome ' + user.user_metadata.full_name}
 			subtitle="Select a party, or create a new one!"
 			items={userParties.map((p) => {

@@ -26,7 +26,8 @@
       https://github.com/ivanhofer/typesafe-i18n-demo-sveltekit - Basic Sveltekit i18n setup
 - [x] TailwindCSS
       https://www.tailwind-kit.com/components
-      https://svelte-headlessui.goss.io/docs <-- probably don't need
+      https://svelte-headlessui.goss.io/docs
+      https://github.com/rgossiaux/svelte-heroicons
       https://tailwind-elements.com/quick-start/ <-- might be useful to speed things up
 - [x] Backend: Supabase or Firebase (realtime + auth) - realtime required for dashboard
       https://github.com/supabase/auth-helpers/tree/main/examples/sveltekit/src
