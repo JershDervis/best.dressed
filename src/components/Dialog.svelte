@@ -15,6 +15,9 @@
 	export let icon: ConstructorOfATypedSvelteComponent | undefined = undefined;
 	export let theme: string = 'red';
 
+	// Controls the enabled state of the submit button
+	export let submitable: boolean = true;
+
 	let isOpen = false;
 
 	export const openModal = () => {
@@ -28,7 +31,8 @@
 		isOpen = false;
 	};
 
-	const deleteParty = () => {
+	const submit = () => {
+		if (!submitable) return;
 		isOpen = false;
 	};
 </script>
@@ -45,7 +49,7 @@
 	leaveTo="transform scale-95 opacity-0"
 >
 	<Dialog open={isOpen} on:close={closeModal}>
-		<div class="fixed z-10 inset-0 overflow-y-auto bg-gray-900 bg-opacity-90 content-center">
+		<div class="fixed z-10 inset-0 overflow-y-auto bg-gray-900 bg-opacity-50 content-center">
 			<div
 				class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
 			>
@@ -58,7 +62,7 @@
 					leaveTo="opacity-0"
 					entered="opacity-75"
 				>
-					<DialogOverlay class="fixed inset-0 bg-gray-500 transition-opacity" />
+					<DialogOverlay class="fixed inset-0 bg-gray-900 transition-opacity" />
 				</TransitionChild>
 
 				<TransitionChild
@@ -100,11 +104,15 @@
 									</div>
 								</div>
 							</div>
-							<div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+							<div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse mt-2">
 								<button
 									type="button"
-									on:click={deleteParty}
-									class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-{theme}-600 text-base font-medium text-white hover:bg-{theme}-700 sm:ml-3 sm:w-auto sm:text-sm"
+									on:click={submit}
+									class={`w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 ${
+										submitable
+											? `bg-${theme}-600 hover:bg-${theme}-700`
+											: `bg-gray-300 cursor-not-allowed`
+									} text-base font-medium text-white sm:ml-3 sm:w-auto sm:text-sm`}
 								>
 									{submitText}
 								</button>

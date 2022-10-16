@@ -1,10 +1,19 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { browser } from '$app/environment';
+	import { PlusCircleIcon } from '@rgossiaux/svelte-heroicons/solid';
+	import Textfield from '$components/Textfield.svelte';
+	import Dialog from '$components/Dialog.svelte';
 	import PartyList from '$components/party/PartyList.svelte';
 	import { supabaseClient } from '$lib/db';
+	import { applyAction, enhance } from '$app/forms';
 
+	/** @type {import('./$types').PageData} */
 	export let data: PageData;
+
+	/** @type {import('./$types').ActionData} */
+	export let form;
+
 	$: ({ user } = data.session);
 
 	interface Party {
@@ -27,6 +36,11 @@
 	$: if (browser && user) {
 		loadData();
 	}
+
+	let dialog: Dialog;
+	let partyName: string;
+
+	$: canSubmit = partyName !== undefined && partyName.length > 0;
 </script>
 
 <head>
@@ -43,17 +57,51 @@
 {#if user}
 	<!-- If we found parties AND there wasn't any -->
 	{#if userParties !== null}
-		<!-- TODO: test this page on small mobile (width) -->
-		<PartyList
-			title={'Welcome ' + user.user_metadata.full_name}
-			subtitle="Select a party, or create a new one!"
-			items={userParties.map((p) => {
-				return {
-					title: p.name,
-					href: `/party/${p.room_uuid}`
-				};
-			})}
-		/>
+		<Dialog
+			bind:this={dialog}
+			bind:submitable={canSubmit}
+			title="Create a party"
+			submitText="Create"
+			icon={PlusCircleIcon}
+			theme="blue"
+		>
+			<form method="post" action="?/create" use:enhance>
+				<Textfield
+					bind:value={partyName}
+					idName="partyName"
+					label="Give your party a name:"
+					placeholder="21st Birthday!"
+				/>
+			</form>
+		</Dialog>
+		<div
+			class="container flex flex-col mx-auto w-full items-center justify-center bg-white dark:bg-gray-800 shadow-lg"
+		>
+			<div class="px-4 py-5 sm:px-6 border-b w-full flex flex-row items-center">
+				<div class="grow">
+					<h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white">
+						Welcome {user.user_metadata.full_name}
+					</h3>
+					<p class="mt-1 max-w-2xl text-sm text-gray-500 dark:text-gray-200">
+						Select a party, or create a new one!
+					</p>
+				</div>
+				<button
+					on:click={() => dialog.openModal()}
+					class="text-center flex-col justify-end flex items-center rounded-md px-4 py-2 text-sm font-medium bg-blue-600 text-gray-700 dark:text-gray-50 hover:bg-gray-50 dark:hover:bg-blue-500"
+				>
+					New Party
+				</button>
+			</div>
+			<PartyList
+				items={userParties.map((p) => {
+					return {
+						title: p.name,
+						href: `/party/${p.room_uuid}`
+					};
+				})}
+			/>
+		</div>
 	{:else}
 		<div>You haven't created any parties yet, click here to create one!</div>
 	{/if}
