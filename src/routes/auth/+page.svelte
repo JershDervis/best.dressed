@@ -4,4 +4,4 @@
 </script>
 
 <!-- TODO: Create my own form -->
-<Auth {supabaseClient} providers={['google']} />
+<Auth {supabaseClient} socialColors={true} providers={['google']} />
