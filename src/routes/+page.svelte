@@ -1,20 +1,15 @@
 <script lang="ts">
-	import type { PageData } from './$types';
 	import { browser } from '$app/environment';
 	import { PlusCircleIcon } from '@rgossiaux/svelte-heroicons/solid';
 	import Textfield from '$components/Textfield.svelte';
 	import Dialog from '$components/Dialog.svelte';
 	import PartyList from '$components/party/PartyList.svelte';
+	import { enhance } from '$app/forms';
 	import { supabaseClient } from '$lib/db';
-	import { applyAction, enhance } from '$app/forms';
-
-	/** @type {import('./$types').PageData} */
-	export let data: PageData;
+	import { page } from '$app/stores';
 
 	/** @type {import('./$types').ActionData} */
 	export let form;
-
-	$: ({ user } = data.session);
 
 	interface Party {
 		room_uuid: string;
@@ -24,16 +19,18 @@
 	let userParties: Party[] | null = [];
 
 	const loadData = async () => {
-		const { data } = await supabaseClient
-			.rpc('get_user_parties', {
-				return_limit: 10,
-				user_id: user?.id
-			})
-			.select('room_uuid, name');
-		userParties = data;
+		if ($page.data.session?.user) {
+			const { data } = await supabaseClient
+				.rpc('get_user_parties', {
+					return_limit: 10,
+					user_id: $page.data.session.user.id
+				})
+				.select('room_uuid, name');
+			userParties = data;
+		}
 	};
 
-	$: if (browser && user) {
+	$: if (browser && $page.data.session) {
 		loadData();
 	}
 
@@ -54,7 +51,7 @@
 </h1>
 
 <!-- If the user is authenticated -->
-{#if user}
+{#if $page.data.session}
 	<!-- If we found parties AND there wasn't any -->
 	{#if userParties !== null}
 		<Dialog
@@ -80,7 +77,7 @@
 			<div class="px-4 py-5 sm:px-6 border-b w-full flex flex-row items-center">
 				<div class="grow">
 					<h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white">
-						Welcome {user.user_metadata.full_name}
+						Welcome {$page.data.session?.user?.user_metadata.full_name}
 					</h3>
 					<p class="mt-1 max-w-2xl text-sm text-gray-500 dark:text-gray-200">
 						Select a party, or create a new one!

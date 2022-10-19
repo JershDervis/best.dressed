@@ -3,7 +3,7 @@
 	import { Transition } from '@rgossiaux/svelte-headlessui';
 	import { page } from '$app/stores';
 
-	export let user: User | undefined;
+	export let user: User | undefined | null;
 	export let signOut: () => void;
 
 	let isOpen = false;
