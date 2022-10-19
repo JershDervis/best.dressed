@@ -4,7 +4,6 @@
 	import Textfield from '$components/Textfield.svelte';
 	import Dialog from '$components/Dialog.svelte';
 	import PartyList from '$components/party/PartyList.svelte';
-	import { enhance } from '$app/forms';
 	import { supabaseClient } from '$lib/db';
 	import { page } from '$app/stores';
 
@@ -59,17 +58,16 @@
 			bind:submitable={canSubmit}
 			title="Create a party"
 			submitText="Create"
+			submitAction="?/create_party"
 			icon={PlusCircleIcon}
 			theme="blue"
 		>
-			<form method="post" action="?/create" use:enhance>
-				<Textfield
-					bind:value={partyName}
-					idName="partyName"
-					label="Give your party a name:"
-					placeholder="21st Birthday!"
-				/>
-			</form>
+			<Textfield
+				bind:value={partyName}
+				idName="partyName"
+				label="Give your party a name:"
+				placeholder="21st Birthday!"
+			/>
 		</Dialog>
 		<div
 			class="container flex flex-col mx-auto w-full items-center justify-center bg-white dark:bg-gray-800 shadow-lg"

@@ -2,7 +2,7 @@
 	import type { PageData } from './$types';
 
 	export let data: PageData;
-	$: ({ user } = data.session);
+	// $: ({ user } = data.session);
 
 	const partyUUID = data.party_uuid;
 </script>
