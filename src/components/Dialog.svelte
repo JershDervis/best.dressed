@@ -19,22 +19,25 @@
 	// Controls the enabled state of the submit button
 	export let submitable: boolean = true;
 
+	export let isLoadingState = false;
+
 	let isOpen = false;
 
-	export const openModal = () => {
+	export const open = () => {
 		isOpen = true;
+		isLoadingState = false;
 	};
 
 	/**
 	 * Handle closing if the form has modified content
 	 */
-	const closeModal = () => {
+	export const close = () => {
 		isOpen = false;
 	};
 
 	const submit = () => {
 		if (!submitable) return;
-		isOpen = false;
+		isLoadingState = true;
 	};
 </script>
 
@@ -50,7 +53,7 @@
 	leaveFrom="transform scale-100 opacity-100"
 	leaveTo="transform scale-95 opacity-0"
 >
-	<Dialog open={isOpen} on:close={closeModal}>
+	<Dialog open={isOpen} on:close={close}>
 		<div class="fixed z-10 inset-0 overflow-y-auto bg-gray-900 bg-opacity-50 content-center">
 			<div
 				class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
@@ -104,11 +107,13 @@
 										{/if}
 										<div class="mt-2">
 											<slot />
+											test
 										</div>
 									</div>
 								</div>
 								<div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse mt-2">
 									<button
+										disabled={!submitable}
 										type="submit"
 										on:click={submit}
 										class={`w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 ${
@@ -117,11 +122,35 @@
 												: `bg-gray-300 cursor-not-allowed`
 										} text-base font-medium text-white sm:ml-3 sm:w-auto sm:text-sm`}
 									>
-										{submitText}
+										{#if isLoadingState}
+											<svg
+												class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+												xmlns="http://www.w3.org/2000/svg"
+												fill="none"
+												viewBox="0 0 24 24"
+											>
+												<circle
+													class="opacity-25"
+													cx="12"
+													cy="12"
+													r="10"
+													stroke="currentColor"
+													stroke-width="4"
+												/>
+												<path
+													class="opacity-75"
+													fill="currentColor"
+													d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+												/>
+											</svg>
+											Loading...
+										{:else}
+											{submitText}
+										{/if}
 									</button>
 									<button
 										type="button"
-										on:click={closeModal}
+										on:click={close}
 										class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:text-gray-500 sm:mt-0 sm:w-auto sm:text-sm"
 									>
 										Cancel

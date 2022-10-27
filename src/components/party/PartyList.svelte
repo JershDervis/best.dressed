@@ -9,7 +9,7 @@
 
 <ul class="flex flex-col divide divide-y w-full">
 	{#each items as item}
-		<li class="flex flex-row dark:hover:bg-gray-700">
+		<li class="flex flex-row bg-base-300">
 			<Card title={item.title} href={item.href} />
 		</li>
 	{/each}
