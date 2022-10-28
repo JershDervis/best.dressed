@@ -1,5 +1,4 @@
 <script>
-	import { enhance } from '$app/forms';
 	import { supabaseClient } from '$lib/db';
 </script>
 

@@ -15,7 +15,8 @@ const config = {
 		alias: {
 			// this will match a file
 			'$lib/*': './src/lib/*',
-			'$components/*': './src/components/*'
+			'$components/*': './src/components/*',
+      '$types/*': './src/types/*'
 		}
 	}
 };

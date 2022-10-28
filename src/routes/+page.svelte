@@ -3,13 +3,8 @@
 	import PartyList from '$components/party/PartyList.svelte';
 	import { supabaseClient } from '$lib/db';
 	import { page } from '$app/stores';
-	import { enhance } from '$app/forms';
-	import Textfield from '$components/Textfield.svelte';
-
-	interface Party {
-		room_uuid: string;
-		name: string;
-	}
+	import { applyAction, enhance } from '$app/forms';
+	import type Party from '$types/party.type';
 
 	let userParties: Party[] | null = [];
 
@@ -21,7 +16,7 @@
 					user_id: $page.data.session.user.id
 				})
 				.select('room_uuid, name');
-			userParties = data;
+			userParties = data as Party[];
 		}
 	};
 
@@ -29,9 +24,9 @@
 		loadData();
 	}
 
+	let awaitingRequest = false;
+	let bInputParty = '';
 	let idPartyName = 'partyName';
-	let bInputPartyName = '';
-	let bInputDisabledPartyName = false;
 </script>
 
 <head>
@@ -81,19 +76,67 @@
 	<div class="modal-box">
 		<h3 class="font-bold text-lg">Create a Party!</h3>
 		<div class="py-4">
-			<form method="post" action="?/create_party" use:enhance>
+			<form
+				method="post"
+				action="?/create_party"
+				use:enhance={() => {
+					// `form` is the `<form>` element
+					// `data` is its `FormData` object
+					// `action` is the URL to which the form is posted
+					// `cancel()` will prevent the submission
+					awaitingRequest = true;
+
+					return async ({ result }) => {
+						//  Called when the server returns a result from 'create_party' endpoint
+						if (result.type === 'error') {
+							await applyAction(result);
+						} else if (result.type === 'success') {
+							//  If the request was successful, get the data and update the list
+							//  TODO: Add the new party to the list
+							if (result.data) {
+								let party = {
+									name: result.data.name,
+									room_uuid: result.data.room_uuid
+								};
+								if (userParties === null) userParties = [party];
+								else {
+									userParties = [
+										{
+											name: result.data.name,
+											room_uuid: result.data.room_uuid
+										},
+										...userParties
+									];
+								}
+							}
+
+							// Finally, close the modal to show the new party
+							document.getElementById('modal-close')?.click();
+						}
+
+						// We're done waiting for the response.. let the ui update to reflect this
+						awaitingRequest = false;
+					};
+				}}
+			>
 				<label for={idPartyName}>Enter your party name:</label>
 				<input
-					bind:value={bInputPartyName}
-					disabled={bInputDisabledPartyName}
+					bind:value={bInputParty}
+					disabled={awaitingRequest}
 					type="text"
 					name={idPartyName}
 					class="input input-bordered w-full my-1"
 					placeholder="Josh's Big Birthday Bash!"
 				/>
 				<div class="modal-action">
-					<button for="modal-create-party" class="btn">Close</button>
-					<button id="btn-create-party" type="submit" class="btn">Create!</button>
+					<label for="modal-create-party" id="modal-close" class="btn">Close</label>
+					{#if awaitingRequest}
+						<button class="btn btn-primary btn-loading" disabled>Creating Party...</button>
+					{:else}
+						<button type="submit" class="btn btn-primary" disabled={bInputParty.length <= 0}>
+							Create Party
+						</button>
+					{/if}
 				</div>
 			</form>
 		</div>

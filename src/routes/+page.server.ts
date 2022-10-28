@@ -14,7 +14,7 @@ export const actions = {
 		if (!session) throw error(401, { message: 'Unauthorized user request' });
 		if (!partyName) throw error(400, { message: 'Missing party name' });
 
-		//  Submit to the db
+		//  Submit db insert request
 		const { data, error: sbError } = await supabaseClient
 			.rpc('create_party', {
 				user_id: session.user?.id,
@@ -23,10 +23,8 @@ export const actions = {
 			.limit(1)
 			.single();
 
-		console.log(data, sbError);
+		if (sbError) throw error(500, { message: sbError.message });
 
-		if (sbError) return { success: false, message: sbError };
-
-		return { success: true, room_uuid: data.room_uuid, name: data.name };
+		return { room_uuid: data.room_uuid, name: data.name };
 	}
 };

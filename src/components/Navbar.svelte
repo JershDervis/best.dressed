@@ -57,7 +57,7 @@
 				<ul class="menu menu-horizontal mx-2">
 					<!-- Navbar menu content here -->
 					{#each navItems as item}
-						<li><a href={item.href}>{item.name}</a></li>
+						<li><a class="rounded-md" href={item.href}>{item.name}</a></li>
 					{/each}
 				</ul>
 			</div>
@@ -78,7 +78,7 @@
 								<li><a href={item.href}>{item.name}</a></li>
 							{:else if typeof item.href === 'function'}
 								<!-- svelte-ignore a11y-missing-attribute -->
-								<li><a on:click={item.href}>{item.name}</a></li>
+								<li><a class="rounded-md" on:click={item.href}>{item.name}</a></li>
 							{/if}
 						{/if}
 					{/each}
