@@ -1,5 +1,5 @@
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
-import { error, type RequestEvent } from '@sveltejs/kit';
+import { error, redirect, type RequestEvent } from '@sveltejs/kit';
 
 /** @type {import('./$types').Actions} */
 export const actions = {
@@ -11,7 +11,7 @@ export const actions = {
 		const partyName = formData.get('partyName')?.toString();
 
 		//  Error checking
-		if (!session) throw error(401, { message: 'Unauthorized user request' });
+		if (!session) throw redirect(401, '/auth');
 		if (!partyName) throw error(400, { message: 'Missing party name' });
 
 		//  Submit db insert request
