@@ -26,7 +26,7 @@
 </script>
 
 <Navbar user={$page.data.session?.user} signOut={signout}>
-	<div class="container mx-auto mt-4 rounded-md text-gray-400 p-4 max-w-2xl bg-base-200">
+	<div class="container mx-auto mt-4 rounded-md text-base-content p-4 max-w-2xl bg-base-200">
 		<slot />
 	</div>
 </Navbar>

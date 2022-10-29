@@ -8,6 +8,8 @@
 
 	let userParties: Party[] | null = [];
 
+	let awaitingServerData = true;
+
 	const loadData = async () => {
 		if ($page.data.session?.user) {
 			const { data } = await supabaseClient
@@ -18,6 +20,7 @@
 				.select('room_uuid, name');
 			userParties = data as Party[];
 		}
+		awaitingServerData = false;
 	};
 
 	$: if (browser && $page.data.session) {
@@ -30,13 +33,13 @@
 </script>
 
 <head>
-	<title>{import.meta.env.VITE_PUBLIC_APP_NAME}</title>
+	<title
+		>{import.meta.env.VITE_PUBLIC_APP_NAME + ($page.data.session ? ' | Your Parties' : '')}</title
+	>
 </head>
 
-<h1
-	class="text-center text-3xl text-base-content font-extrabold leading-8 tracking-tight sm:text-4xl mb-4"
->
-	{import.meta.env.VITE_PUBLIC_APP_NAME}
+<h1 class="text-center text-3xl font-extrabold leading-8 tracking-tight sm:text-4xl mb-4">
+	Your Parties
 </h1>
 
 <!-- If the user is authenticated -->
@@ -45,26 +48,30 @@
 	{#if userParties !== null}
 		<div class="px-4 py-5 sm:px-6 border-b w-full flex flex-row items-center">
 			<div class="grow">
-				<h3 class="text-lg leading-6 font-medium text-base-content">
+				<h3 class="text-lg leading-6 font-medium">
 					Welcome {$page.data.session?.user?.user_metadata.full_name}
 				</h3>
-				<p class="mt-1 max-w-2xl text-sm text-base-content">Select a party, or create a new one!</p>
+				<p class="mt-1 max-w-2xl text-sm">Select a party, or create a new one!</p>
 			</div>
 			<label for="modal-create-party" class="btn btn-primary modal-button">New Party</label>
 		</div>
-		<PartyList
-			items={userParties.map((p) => {
-				return {
-					title: p.name,
-					href: `/party/${p.room_uuid}`
-				};
-			})}
-		/>
+		{#if awaitingServerData}
+			<progress class="progress w-full" />
+		{:else}
+			<PartyList
+				items={userParties.map((p) => {
+					return {
+						title: p.name,
+						href: `/party/${p.room_uuid}`
+					};
+				})}
+			/>
+		{/if}
 	{:else}
 		<div>You haven't created any parties yet, click here to create one!</div>
 	{/if}
 {:else}
-	<p class="mt-3 text-lg text-base-content">
+	<p class="mt-3 text-lg">
 		Welcome to {import.meta.env.VITE_PUBLIC_APP_NAME}! Please sign in to get started.
 	</p>
 {/if}
@@ -78,10 +85,7 @@
 				method="post"
 				action="?/create_party"
 				use:enhance={() => {
-					// `form` is the `<form>` element
-					// `data` is its `FormData` object
-					// `action` is the URL to which the form is posted
-					// `cancel()` will prevent the submission
+					//  When response is posted, set awaiting to true
 					awaitingRequest = true;
 
 					return async ({ result }) => {
@@ -110,7 +114,6 @@
 									];
 								}
 							}
-
 							// Finally, close the modal to show the new party
 							document.getElementById('modal-close')?.click();
 						}

@@ -52,7 +52,11 @@
 					>
 				</label>
 			</div>
-			<div class="flex-1 px-2 mx-2">{import.meta.env.VITE_PUBLIC_APP_NAME}</div>
+			<div class="flex-1 px-2 mx-2">
+				<a class="btn btn-ghost normal-case text-xl" href="/"
+					>{import.meta.env.VITE_PUBLIC_APP_NAME}</a
+				>
+			</div>
 			<div class="flex-none hidden lg:block">
 				<ul class="menu menu-horizontal mx-2">
 					<!-- Navbar menu content here -->

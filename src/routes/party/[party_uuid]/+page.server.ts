@@ -14,7 +14,6 @@ export const load: PageServerLoad = async ({ params }) => {
 			.limit(1);
 
 		if (error) {
-			// Would prefer to throw the error right away but receiving type errors
 			errCode = 500;
 			errMessage = error.message;
 		} else if (data !== null && data.length > 0) {

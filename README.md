@@ -3,7 +3,7 @@
 ## Plan:
 
 - [x] Users can register
-- [ ] Registered Users can create 'parties'
+- [x] Registered Users can create 'parties'
 - [ ] A user can connect a party to a FB event? Pull in details
 - [ ] A user can connect a party to a Spotify playlist for live updates on dashboard
 - [x] A party has a unique id (key) which will be a dynamic route e.g. /p/1a2b3c4d
