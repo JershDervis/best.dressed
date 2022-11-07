@@ -29,6 +29,7 @@
       https://svelte-headlessui.goss.io/docs
       https://github.com/rgossiaux/svelte-heroicons
       https://tailwind-elements.com/quick-start/ <-- might be useful to speed things up
+- [x] DaisyUI - Built on top of Tailwind https://daisyui.com/
 - [x] Backend: Supabase or Firebase (realtime + auth) - realtime required for dashboard
       https://github.com/supabase/auth-helpers/tree/main/examples/sveltekit/src
       https://github.com/supabase-community/supabase-ui-svelte

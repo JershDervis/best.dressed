@@ -38,12 +38,11 @@
 	>
 </head>
 
-<h1 class="text-center text-3xl font-extrabold leading-8 tracking-tight sm:text-4xl mb-4">
-	Your Parties
-</h1>
-
 <!-- If the user is authenticated -->
 {#if $page.data.session}
+	<h1 class="text-center text-3xl font-extrabold leading-8 tracking-tight sm:text-4xl mb-4">
+		Your Parties
+	</h1>
 	<!-- If we found parties AND there wasn't any -->
 	{#if userParties !== null}
 		<div class="px-4 py-5 sm:px-6 border-b w-full flex flex-row items-center">
@@ -56,8 +55,10 @@
 			<label for="modal-create-party" class="btn btn-primary modal-button">New Party</label>
 		</div>
 		{#if awaitingServerData}
+			<!-- Show loading animation... -->
 			<progress class="progress w-full" />
 		{:else}
+			<!-- Once we receive the response, display it... -->
 			<PartyList
 				items={userParties.map((p) => {
 					return {
@@ -96,26 +97,27 @@
 								document.getElementById(idPartyName)?.focus();
 							}
 							await applyAction(result);
-						} else if (result.type === 'success') {
+						} else if (result.type === 'success' && result.data) {
 							//  If the request was successful, get the data and update the list
-							if (result.data) {
-								let party = {
-									name: result.data.name,
-									room_uuid: result.data.room_uuid
-								};
-								if (userParties === null) userParties = [party];
-								else {
-									userParties = [
-										{
-											name: result.data.name,
-											room_uuid: result.data.room_uuid
-										},
-										...userParties
-									];
-								}
+							let party = {
+								name: result.data.name,
+								room_uuid: result.data.room_uuid
+							};
+							if (userParties === null) userParties = [party];
+							else {
+								userParties = [
+									{
+										name: result.data.name,
+										room_uuid: result.data.room_uuid
+									},
+									...userParties
+								];
 							}
 							// Finally, close the modal to show the new party
 							document.getElementById('modal-close')?.click();
+
+							// TODO: Redirect the user to the new party page?
+							// window.location.href = '/party/' + party.room_uuid;
 						}
 
 						// We're done waiting for the response.. let the ui update to reflect this
